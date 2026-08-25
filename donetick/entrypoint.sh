@@ -41,7 +41,12 @@ export DT_SCHEDULER_JOBS_OVERDUE_JOB=$(bashio::config 'scheduler_jobs_overdue_jo
 export DT_SCHEDULER_JOBS_PRE_DUE_JOB=$(bashio::config 'scheduler_jobs_pre_due_job')
 
 #
-# Start donetick backend and save PID 
+# Start nginx (handles port 80 web UI proxy and port 8099 ingress)
+bashio::log.info "Starting nginx..."
+mkdir -p /run/nginx
+nginx -e /dev/stderr
+
+# Start donetick backend and save PID
 bashio::log.info "Starting Donetick backend..."
 
 # Envirment variables:
@@ -60,7 +65,8 @@ PID1=$!
 
 cleanup() {
     echo "Terminating processes..."
-    kill $PID1 
+    kill $PID1
+    nginx -s quit 2>/dev/null || true
 }
 
 # Trap SIGINT & SIGTERM to clean up before exiting
