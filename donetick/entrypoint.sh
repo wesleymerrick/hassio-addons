@@ -4,7 +4,9 @@
 # Envirment variables:
 export DT_TELEGRAM_TOKEN=$(bashio::config 'telegram_token')
 export DT_PUSHOVER_TOKEN=$(bashio::config 'pushover_token')
-export DT_DISABLE_SIGNUP=$(bashio::config 'disable_signup')
+export DT_IS_USER_CREATION_DISABLED=$(bashio::config 'disable_signup')
+export DT_SINGLE_CIRCLE_INSTANCE=$(bashio::config 'single_circle_instance')
+export DT_DISABLE_PASSWORD_AUTH=$(bashio::config 'disable_password_auth')
 
 # OAuth2 settings
 export DT_OAUTH2_CLIENT_ID=$(bashio::config 'oauth2_client_id')
