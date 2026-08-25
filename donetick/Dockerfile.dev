@@ -1,0 +1,26 @@
+ARG BUILD_FROM
+FROM $BUILD_FROM
+
+LABEL \
+    org.opencontainers.image.title="Home Assistant Add-on: Donetick" \
+    org.opencontainers.image.description="Simplify Tasks & Chores, Together." \
+    org.opencontainers.image.source="https://github.com/donetick/hassio-addons" \
+    org.opencontainers.image.licenses="GNU AFFERO GENERAL PUBLIC LICENSE"
+
+# locally-built binary placed here by scripts/build-dev.sh
+RUN apk --no-cache add nginx \
+    && mkdir -p /var/lib/nginx/logs /var/lib/nginx/tmp /run/nginx \
+    && chown -R root:root /var/lib/nginx
+RUN mkdir -p /app/core
+
+COPY donetick /app/core/donetick
+COPY config/ /app/core/config/
+RUN chmod +x /app/core/donetick
+
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+EXPOSE 2021 8099
+
+CMD ["/app/entrypoint.sh"]

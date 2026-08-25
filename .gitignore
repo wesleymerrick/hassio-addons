@@ -1,0 +1,6 @@
+# built binary artifact (placed by scripts/build-dev.sh, not committed)
+donetick/donetick
+donetick/config/
+
+# local HAOS connection config
+.env
