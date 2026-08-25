@@ -9,7 +9,9 @@ LABEL \
 
 WORKDIR /app
 
-RUN apk --no-cache add gcc musl-dev git sqlite-dev curl jq
+RUN apk --no-cache add gcc musl-dev git sqlite-dev curl jq nginx \
+    && mkdir -p /var/lib/nginx/logs /var/lib/nginx/tmp /run/nginx \
+    && chown -R root:root /var/lib/nginx /run/nginx
 RUN mkdir -p /app/core
 
 # Determine the architecture and download the appropriate binary
@@ -25,13 +27,14 @@ RUN arch=$(uname -m) && \
     latest_release=$(curl --silent "https://api.github.com/repos/donetick/donetick/releases/latest" | jq -r .tag_name) && \
     curl -fL "https://github.com/donetick/donetick/releases/download/${latest_release}/${binary}" | tar -xz -C /app/core
 
-# Copy entrypoint script
+# Copy nginx config and entrypoint script
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
 
 # Expose necessary ports
-EXPOSE 2021
+EXPOSE 2021 8099
 
 # Set the entrypoint script
 CMD ["/app/entrypoint.sh"]

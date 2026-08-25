@@ -4,7 +4,9 @@
 # Envirment variables:
 export DT_TELEGRAM_TOKEN=$(bashio::config 'telegram_token')
 export DT_PUSHOVER_TOKEN=$(bashio::config 'pushover_token')
-export DT_DISABLE_SIGNUP=$(bashio::config 'disable_signup')
+export DT_IS_USER_CREATION_DISABLED=$(bashio::config 'disable_signup')
+export DT_SINGLE_CIRCLE_INSTANCE=$(bashio::config 'single_circle_instance')
+export DT_DISABLE_PASSWORD_AUTH=$(bashio::config 'disable_password_auth')
 
 # OAuth2 settings
 export DT_OAUTH2_CLIENT_ID=$(bashio::config 'oauth2_client_id')
@@ -41,7 +43,12 @@ export DT_SCHEDULER_JOBS_OVERDUE_JOB=$(bashio::config 'scheduler_jobs_overdue_jo
 export DT_SCHEDULER_JOBS_PRE_DUE_JOB=$(bashio::config 'scheduler_jobs_pre_due_job')
 
 #
-# Start donetick backend and save PID 
+# Start nginx (handles port 80 web UI proxy and port 8099 ingress)
+bashio::log.info "Starting nginx..."
+mkdir -p /run/nginx
+nginx -e /dev/stderr
+
+# Start donetick backend and save PID
 bashio::log.info "Starting Donetick backend..."
 
 # Envirment variables:
@@ -60,7 +67,8 @@ PID1=$!
 
 cleanup() {
     echo "Terminating processes..."
-    kill $PID1 
+    kill $PID1
+    nginx -s quit 2>/dev/null || true
 }
 
 # Trap SIGINT & SIGTERM to clean up before exiting
