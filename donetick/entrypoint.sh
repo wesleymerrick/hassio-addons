@@ -9,6 +9,15 @@ export DT_SINGLE_CIRCLE_INSTANCE=$(bashio::config 'single_circle_instance')
 export DT_DISABLE_PASSWORD_AUTH=$(bashio::config 'disable_password_auth')
 export DT_TRUST_INGRESS_AUTH=$(bashio::config 'trust_ingress_auth')
 
+# Lets the login page link back into the ingress panel (which triggers the
+# HA login flow) for anyone who reaches this server some other way, e.g. the
+# directly-exposed port. Resolved from the Supervisor rather than hardcoded
+# since the running slug depends on how this addon was installed.
+if bashio::config.true 'trust_ingress_auth'; then
+    export DT_HA_INGRESS_SLUG=$(curl -s -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+        "http://supervisor/addons/self/info" | jq -r '.data.slug // empty')
+fi
+
 # OAuth2 settings
 export DT_OAUTH2_CLIENT_ID=$(bashio::config 'oauth2_client_id')
 export DT_OAUTH2_CLIENT_SECRET=$(bashio::config 'oauth2_client_secret')
