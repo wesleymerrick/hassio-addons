@@ -35,6 +35,7 @@ options:
   disable_signup: false
   single_circle_instance: false
   disable_password_auth: false
+  trust_ingress_auth: false
   server_read_timeout: "10s"
   server_write_timeout: "10s"
   server_rate_period: "60s"
@@ -69,6 +70,7 @@ schema:
   disable_signup: "bool?"
   single_circle_instance: "bool?"
   disable_password_auth: "bool?"
+  trust_ingress_auth: "bool?"
 
   # Server settings
   server_read_timeout: "str?"
