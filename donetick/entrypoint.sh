@@ -5,6 +5,7 @@
 export DT_TELEGRAM_TOKEN=$(bashio::config 'telegram_token')
 export DT_PUSHOVER_TOKEN=$(bashio::config 'pushover_token')
 export DT_DISABLE_SIGNUP=$(bashio::config 'disable_signup')
+export DT_TRUST_INGRESS_AUTH=$(bashio::config 'trust_ingress_auth')
 
 # OAuth2 settings
 export DT_OAUTH2_CLIENT_ID=$(bashio::config 'oauth2_client_id')
