@@ -31,6 +31,8 @@ Donetick is an open-source, user-friendly app designed to help you organize task
 
 🔑 SSO/OIDC Support: Integrate with identity providers using Single Sign-On and OpenID Connect.
 
+🏠 Home Assistant Ingress Sign-In: Enable `trust_ingress_auth` to sign in automatically with your Home Assistant account -- no separate Donetick password needed.
+
 
 
 ![Supports aarch64 Architecture][aarch64-shield]

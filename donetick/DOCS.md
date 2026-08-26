@@ -26,13 +26,14 @@ Manual instructions:
 
 1. Start the add-on.
 1. Open the Web UI.
-1. Create the first user account
+1. Create the first user account, or, if `trust_ingress_auth` is enabled, click "Continue with Home Assistant" on the add-on's ingress panel instead.
 
 ## Configuration
 ```
 telegram_token: ""
 pushover_token: ""
 disable_signup: false
+trust_ingress_auth: false
 auth_provider: ""
 oauth2_client_id: ""
 oauth2_client_secret: ""
@@ -57,6 +58,12 @@ email_appHost: ""
 | pushover_token        | no       |         | optional token for pushover integration
 | disable_signup        | no       | false   | If true, disables user signups.
 | jwt_secret            | yes      |         | secret needed by donetick backend. Run `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` to generate and paste it in the field.
+
+### Home Assistant Ingress Settings
+
+| Option                | Required | Default | Explanation
+|-----------------------|----------|---------|------------------
+| trust_ingress_auth    | no       | false   | If true, signs users in automatically using their Home Assistant identity when the add-on is opened through Home Assistant's ingress (sidebar panel / "Open Web UI"). A first-time visitor sees a "Continue with Home Assistant" button before anything is created. Doesn't affect access outside of ingress -- the regular username/password (and any SSO) login still works there.
 
 ### OAuth2 Settings
 Any OAuth2 provider that supports OIDC
